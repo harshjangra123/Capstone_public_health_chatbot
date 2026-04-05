@@ -1,3 +1,9 @@
+# This file does:
+# 1. Defines API endpoint (/api/chat)
+# 2. Takes user input
+# 3. Stores conversation history
+# 4. Sends data to LangGraph
+# 5. Returns AI response
 from fastapi import APIRouter
 from pydantic import BaseModel
 from langchain_core.messages import HumanMessage

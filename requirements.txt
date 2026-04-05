@@ -69,3 +69,5 @@ uvicorn==0.41.0
 watchdog==6.0.0
 xxhash==3.6.0
 zstandard==0.25.0
+tavily-python==0.3.3
+langchain-community==0.4.1 
