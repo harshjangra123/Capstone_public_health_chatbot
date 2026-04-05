@@ -51,7 +51,15 @@ def fetch_dataset(query: str) -> str:
     try:
         # 1. routing
         resource_id = get_best_dataset(query)
-        print("Selected dataset:", resource_id)
+        #HANDLE NO MATCH
+        if resource_id is None:
+            print("Fallback to web search")
+
+            # call web tool directly
+            web_result = search_web.run(query)
+
+            return f"No relevant dataset found. Using web search:\n\n{web_result}"
+        
 
         # 2. fetch JSON
         data = fetch_dataset_by_id(resource_id)

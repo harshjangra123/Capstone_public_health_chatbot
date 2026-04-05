@@ -14,14 +14,20 @@ vectorstore = load_registry_index()
 
 def get_best_dataset(query: str):
     # search most similar dataset
-    docs = vectorstore.similarity_search(query, k=1)
+    # use similarity score
+    docs = vectorstore.similarity_search_with_score(query, k=1)
 
-    best_doc = docs[0]
+    best_doc, score = docs[0]
 
-    # DEBUG (very useful)
     print("Query:", query)
     print("Matched text:", best_doc.page_content)
     print("Metadata:", best_doc.metadata)
+    print("Similarity Score:", score)
+
+    # threshold check (IMPORTANT)
+    if score > 2.0: 
+        print("No good dataset match found")
+        return None
 
     return best_doc.metadata["resource_id"]
 
