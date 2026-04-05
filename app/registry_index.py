@@ -1,3 +1,4 @@
+# run this file spraltly for once , for creating vector db for the URL regitry .
 import json
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -46,4 +47,4 @@ def build_registry_index():
 
     print("✅ Registry index created using local embeddings!")
 
-build_registry_index()
+# build_registry_index()

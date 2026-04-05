@@ -30,7 +30,7 @@ def get_best_dataset(query: str):
     return best_doc.metadata["resource_id"]
 
 
-if __name__ == "__main__":
-    query = "HIV cases in India and how can we avoid it"
-    dataset_id = get_best_dataset(query)
-    print("Selected dataset:", dataset_id)
+# if __name__ == "__main__":
+#     query = "HIV cases in India and how can we avoid it"
+#     dataset_id = get_best_dataset(query)
+#     print("Selected dataset:", dataset_id)
