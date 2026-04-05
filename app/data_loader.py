@@ -53,7 +53,7 @@ def json_to_text(data: dict):
     documents = []
     records = data.get("records", [])
 
-    for item in records[:50]:
+    for item in records[:20]:
 
         # 1. Get main entity (state/location)
         state = item.get("states_uts") or item.get("state") or "Unknown"

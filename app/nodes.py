@@ -1,12 +1,11 @@
 # <-- All your nodes will live here (e.g., call_model, tool_nodes).
-from app.llm import llm
+from app.llm import llm, prompt
 from app.state import GraphState
 from tavily import TavilyClient
 import os
 from dotenv import load_dotenv
 from langchain.tools import tool  
 from langgraph.prebuilt import ToolNode 
-from app.llm import llm
 load_dotenv()
 
 tavily = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
@@ -18,8 +17,35 @@ from app.rag_pipeline import chunk_documents, create_vectorstore, retrieve_conte
 @tool
 def fetch_dataset(query: str) -> str:
     """
-    Use this tool for questions related to structured datasets like health, census, demographics, etc.
-    It retrieves relevant information from dataset APIs using RAG.
+    Use this tool ONLY for structured, numerical, and statistical health datasets.
+
+    This tool is designed for:
+    - government or survey-based health data
+    - numerical reports (counts, percentages, prevalence)
+    - tabular data like:
+        - HIV prevalence by state
+        - diabetes patient statistics
+        - population health metrics
+
+    Examples of when to use:
+    - "HIV prevalence in Delhi"
+    - "number of diabetes patients in India"
+    - "state-wise health statistics"
+    - "percentage of infected people"
+
+    DO NOT use this tool for:
+    - latest or recent developments
+    - new medical tests or treatments
+    - current trends or innovations
+    - market-related queries
+    - general medical advice
+
+    Examples of when NOT to use:
+    - "latest test for diabetes"
+    - "new treatment for HIV"
+    - "best medicine for diabetes"
+
+    This tool is ONLY for static, numerical dataset-based information.
     """
 
     try:
@@ -42,7 +68,7 @@ def fetch_dataset(query: str) -> str:
         # 6. retrieve relevant context
         context = retrieve_context(vectorstore, query)
 
-        return context
+        return context[:800]
 
     except Exception as e:
         return f"Dataset tool error: {str(e)}"
@@ -50,8 +76,28 @@ def fetch_dataset(query: str) -> str:
 @tool
 def search_web(query: str) -> str:
     """
-    Search the web for real-time or unknown information.
-    Use this when the question involves recent events, news, or facts not in training data.
+    Search the web for real-time, recent, or evolving information.
+
+    Use this tool when the user asks about:
+    - latest developments, trends, or technologies
+    - new medical tests, treatments, or innovations
+    - current news or recent updates
+    - market availability of products or services
+    - anything that may have changed recently
+
+    Examples:
+    - "latest test available for diabetes"
+    - "new HIV treatment methods"
+    - "recent trends in cancer research"
+    - "current price of bitcoin"
+    - "weather in Delhi today"
+
+    DO NOT use this tool for:
+    - structured statistical datasets
+    - historical numerical data from government datasets
+    - queries about counts, percentages, or tabular reports
+
+    This tool is best for dynamic, real-world, and up-to-date information.
     """
     response = tavily.search(query=query, max_results=3)
 
@@ -77,7 +123,8 @@ def call_model(state: GraphState):
         A dictionary with the LLM's response.
     """
     messages = state["messages"]
-    response = llm_with_tools.invoke(messages)  
+    chain = prompt | llm_with_tools
+    response = chain.invoke({"messages": messages})  
     return {"messages": [response]}
 
 

@@ -2,18 +2,13 @@
 import json
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from app.embeddings import embedding_model
 
 def build_registry_index():
     
     # 1. Load registry
     with open("app\datasets.json", "r") as f:
         registry = json.load(f)
-
-    # 2. Initialize embedding model (LOCAL)
-    embedding_model = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
-    )
-
     texts = []
     metadatas = []
 

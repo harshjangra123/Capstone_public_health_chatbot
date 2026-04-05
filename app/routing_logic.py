@@ -1,11 +1,8 @@
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from app.embeddings import embedding_model
 
 def load_registry_index():
-    embedding_model = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
-    )
-
     vectorstore = Chroma(
         persist_directory="chroma_registry_db",
         embedding_function=embedding_model
@@ -13,10 +10,9 @@ def load_registry_index():
 
     return vectorstore
 
+vectorstore = load_registry_index()
 
 def get_best_dataset(query: str):
-    vectorstore = load_registry_index()
-
     # search most similar dataset
     docs = vectorstore.similarity_search(query, k=1)
 
