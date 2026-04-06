@@ -16,10 +16,23 @@ workflow.set_entry_point("llm")
 
 #CONDITIONAL ROUTING
 def route_tools(state):
-    last_message = state["messages"][-1]
+    messages = state["messages"]
+    last_message = messages[-1]
 
+    # count tool calls
+    tool_calls_count = sum(
+        1 for m in messages
+        if hasattr(m, "tool_calls") and m.tool_calls
+    )
+
+    #if LLM wants tool → go to tool
     if hasattr(last_message, "tool_calls") and last_message.tool_calls:
         return "tools"
+
+    #if tools already used → FORCE FINAL ANSWER
+    if tool_calls_count > 2:
+        return END
+
     return END
 
 workflow.add_conditional_edges(
@@ -32,3 +45,6 @@ workflow.add_edge("tools", "llm")
 
 # Compile the graph into a runnable object
 graph = workflow.compile()
+
+with open('mermaid.txt', 'w') as f:
+    f.write(graph.get_graph().draw_mermaid())

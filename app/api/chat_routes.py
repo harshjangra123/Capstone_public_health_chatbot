@@ -43,6 +43,7 @@ async def chat(request: ChatRequest):
     # Invoke the graph with the full history
     inputs = {"messages": conversation_history}
     result = graph.invoke(inputs)
+    print("📝RESULT:", result)
     
     # Update history with the AI's response
     session_histories[session_id] = result['messages']

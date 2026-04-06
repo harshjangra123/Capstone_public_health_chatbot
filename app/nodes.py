@@ -3,6 +3,7 @@ from app.llm import llm, prompt
 from app.state import GraphState
 from tavily import TavilyClient
 import os
+import re
 from dotenv import load_dotenv
 from langchain.tools import tool  
 from langgraph.prebuilt import ToolNode 
@@ -19,6 +20,27 @@ vectorstore = Chroma(
 )
 
 from langchain_core.messages import AIMessage
+
+def sanitize_for_llm(text: str) -> str:
+    """
+    Clean raw CSV/dataset text so it won't cause markdown rendering
+    issues on the frontend (pipe characters, stray separators, etc.).
+    Converts pipe-delimited rows into readable key: value lines.
+    """
+    lines = text.splitlines()
+    cleaned = []
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        # If line looks like a CSV/pipe row, replace pipes/commas with readable format
+        if '|' in line:
+            parts = [p.strip() for p in line.split('|') if p.strip()]
+            cleaned.append(', '.join(parts))
+        else:
+            cleaned.append(line)
+    return '\n'.join(cleaned)
+
 
 @tool
 def search_dataset(query: str) -> str:
@@ -57,21 +79,25 @@ def search_dataset(query: str) -> str:
     try:
         print("🔍 Query:", query)
 
-        docs = vectorstore.similarity_search(query, k=1)
+        docs = vectorstore.similarity_search(query, k=3)
 
         if not docs:
-            return "No relevant dataset information found."
+             return "NO_DATA_FOUND"
 
         context = "\n".join([doc.page_content for doc in docs])
 
-        if not context.strip():
+        if not context.strip() or len(context.strip()) < 50:
             print("no context found ❌")
-            return "No useful information found in dataset."
+            return "INSUFFICIENT_DATA"
 
-        # return context[:1000]
-        print("context found ")
-        print(context[:800])
-        return f"Here is relevant dataset information:\n\n{context[:800]}"
+        # Sanitize: remove pipe characters and CSV artifacts so the
+        # frontend markdown renderer doesn't try to parse them as tables
+        clean_context = sanitize_for_llm(context[:300])
+
+        print("context found ✅")
+        print(clean_context[:200])
+
+        return f"DATASET_RESULT:\n{clean_context}"
 
     except Exception as e:
         print("❌ ERROR:", str(e))
@@ -97,7 +123,7 @@ def search_web(query: str) -> str:
     - statistics
     - dataset queries (use search_dataset instead)
     """
-    response = tavily.search(query=query, max_results=4)
+    response = tavily.search(query=query, max_results=3)
 
     results = []
     for r in response["results"]:
@@ -108,7 +134,7 @@ def search_web(query: str) -> str:
 
 
 # bind tools
-llm_with_tools = llm.bind_tools([search_web, search_dataset])
+llm_with_tools = llm.bind_tools([search_web])
 
 def call_model(state: GraphState):
     """
@@ -121,11 +147,12 @@ def call_model(state: GraphState):
         A dictionary with the LLM's response.
     """
     try:
+        
         messages = state["messages"]
 
-        chain = prompt | llm_with_tools
-        response = chain.invoke({"messages": messages})
+        response = llm_with_tools.invoke(messages)
 
+        print("🧠 LLM RESPONSE:", response)
         return {"messages": [response]}
 
     except Exception as e:
@@ -138,4 +165,4 @@ def call_model(state: GraphState):
         }
 
 
-tool_node = ToolNode([search_web, search_dataset])
+tool_node = ToolNode([search_web])
