@@ -134,7 +134,7 @@ def search_web(query: str) -> str:
 
 
 # bind tools
-llm_with_tools = llm.bind_tools([search_web])
+llm_with_tools = llm.bind_tools([search_web,search_dataset])
 
 def call_model(state: GraphState):
     """
@@ -165,4 +165,4 @@ def call_model(state: GraphState):
         }
 
 
-tool_node = ToolNode([search_web])
+tool_node = ToolNode([search_web,search_dataset])
