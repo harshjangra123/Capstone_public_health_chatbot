@@ -15,13 +15,15 @@ llm = ChatGroq(
 
 system_prompt = """You are a helpful assistant.
 
-You have access to external tools that can help you answer certain questions.
+STRICT TOOL USAGE RULES:
+- search_web requires: {{"query": "your question"}}
+- search_dataset requires: {{"query": "your question"}}
 
-- Use tools when necessary.
-- Do not manually format tool calls.
-- Let the system handle tool execution.
+NEVER generate:
+- cursor
+- id
 
-For general questions, answer normally.
+Always use correct format.
 """
 
 prompt = ChatPromptTemplate.from_messages(

@@ -1,0 +1,110 @@
+[
+{
+"title": "HIV ART Patients Registration (2015-2019)",
+"resource_id": "acdca218-1a56-4fa2-9e08-3d5e32ff89a6",
+"description": "Number of HIV positive patients registered for treatment at ART clinics in India from 2015 to 2019. Includes yearly treatment enrollment statistics under the National AIDS Control Programme.",
+"category": "hiv"
+},
+{
+"title": "HIV Patients on ART Care (2015-2017)",
+"resource_id": "c41f267b-a7bc-4f5f-8d74-9002a34676dc",
+"description": "State-wise data of HIV patients receiving ART treatment in India between 2015 and 2017. Useful for analyzing treatment coverage across states.",
+"category": "hiv"
+},
+{
+"title": "HIV Prevalence by Population Group (2010-11)",
+"resource_id": "9a362ec2-2cfc-4e08-8c74-7926b2159a69",
+"description": "State and population group-wise HIV prevalence rates based on HIV Sentinel Surveillance data up to 2010-11. Includes infection percentage across demographics.",
+"category": "hiv"
+},
+{
+"title": "HIV/AIDS Patients by State (2017)",
+"resource_id": "7267649e-4fa6-4281-84cb-70c0a235542a",
+"description": "State-wise number of HIV/AIDS patients reported in India as per government data (2017). Useful for total patient count comparisons.",
+"category": "hiv"
+},
+{
+"title": "HIV Prevalence Percentage by State (NFHS-3)",
+"resource_id": "490a7584-0746-4591-b51b-77809707a8af",
+"description": "State-wise HIV prevalence percentage based on NFHS-3 survey (2005-06). Useful for historical prevalence analysis.",
+"category": "hiv"
+},
+{
+"title": "HIV Infected Women Giving Birth (2016-2019)",
+"resource_id": "14c5bbf7-1055-4c9b-96ed-c409393d8b5a",
+"description": "Number of HIV-infected women who gave birth in India from 2016 to 2019. Includes maternal transmission-related statistics.",
+"category": "hiv"
+},
+{
+"title": "TB Cases by State (2018-2020)",
+"resource_id": "27553f2e-4243-4c5b-ace0-99a242859c13",
+"description": "State-wise tuberculosis (TB) cases notified under the National TB Elimination Programme from 2018 to 2020.",
+"category": "tuberculosis"
+},
+{
+"title": "TB Cases and Deaths (2024)",
+"resource_id": "a2b15484-49a4-46f7-984c-5f82675c892a",
+"description": "State-wise tuberculosis case notifications and deaths reported in India during 2024. Useful for latest TB statistics.",
+"category": "tuberculosis"
+},
+{
+"title": "TB Cases and Deaths Year-wise (2021-2024)",
+"resource_id": "c55e6c4f-0bd6-441d-846b-e025ba8266b0",
+"description": "Year-wise TB cases and deaths reported in India under the Ni-kshay portal from 2021 to 2024.",
+"category": "tuberculosis"
+},
+{
+"title": "TB Treatment Success Data (2023-2024)",
+"resource_id": "0fb1790f-3f9c-4b29-ba0c-83123285d52a",
+"description": "State-wise TB patients notified and successfully treated in India during 2023 and 2024.",
+"category": "tuberculosis"
+},
+{
+"title": "TB Case Notification and Treatment Start (2021-2022)",
+"resource_id": "86258105-a60b-4f2a-8e12-025ec35d66b2",
+"description": "State-wise TB case notification and treatment initiation data for 2021 and 2022.",
+"category": "tuberculosis"
+},
+{
+"title": "TB Case Notifications (2020-2023)",
+"resource_id": "e592c160-55ce-42f4-9507-5d3aa875dcd4",
+"description": "State-wise TB case notifications reported from 2020 to mid-2023.",
+"category": "tuberculosis"
+},
+{
+"title": "Dengue Deaths by State (2012-2014)",
+"resource_id": "80da2341-0209-491b-9540-136898337316",
+"description": "State-wise dengue deaths reported in India from 2012 to 2014.",
+"category": "dengue"
+},
+{
+"title": "Dengue Cases Monthly (2018-2019)",
+"resource_id": "f31e0b58-0ed5-4247-ae89-bffdb004bd0c",
+"description": "State and month-wise dengue cases reported in India during 2018 and 2019.",
+"category": "dengue"
+},
+{
+"title": "Dengue Cases by State (2015-2016)",
+"resource_id": "8baceb7f-bd5c-48c9-a05c-f046fb572790",
+"description": "State-wise dengue cases reported in India during 2015 and 2016.",
+"category": "dengue"
+},
+{
+"title": "Dengue and Chikungunya Cases (2018-2021)",
+"resource_id": "ab8a98cd-9f6c-4a79-8624-473cb4863b86",
+"description": "State-wise dengue and chikungunya cases reported in India from 2018 to 2021.",
+"category": "dengue"
+},
+{
+"title": "Dengue Cases and Deaths (2018-2021)",
+"resource_id": "bbfa6042-ec2e-4c28-8135-6fc7b3e4c39c",
+"description": "State-wise dengue cases and deaths reported in India from 2018 to 2021.",
+"category": "dengue"
+},
+{
+"title": "Dengue Cases Year-wise (2019-2021)",
+"resource_id": "4541b8ec-8b23-4882-b4bc-e7ad6e7a9b4f",
+"description": "Year-wise dengue cases reported in India from 2019 to 2021.",
+"category": "dengue"
+}
+]
