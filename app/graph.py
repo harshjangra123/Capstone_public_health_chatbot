@@ -46,5 +46,3 @@ workflow.add_edge("tools", "llm")
 # Compile the graph into a runnable object
 graph = workflow.compile()
 
-with open('mermaid.txt', 'w') as f:
-    f.write(graph.get_graph().draw_mermaid())

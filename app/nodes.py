@@ -7,6 +7,7 @@ import re
 from dotenv import load_dotenv
 from langchain.tools import tool  
 from langgraph.prebuilt import ToolNode 
+from langchain_core.messages import SystemMessage
 load_dotenv()
 
 tavily = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
@@ -138,31 +139,54 @@ llm_with_tools = llm.bind_tools([search_web,search_dataset])
 
 def call_model(state: GraphState):
     """
-    The primary node that calls the LLM.
-
-    Args:
-        state: The current graph state.
-
-    Returns:
-        A dictionary with the LLM's response.
+    The primary node that calls the LLM with system prompt.
     """
     try:
-        
         messages = state["messages"]
+        
+        # Your system prompt
+        system_prompt = """
+You are a public health triage assistant. Reduce disease spread, classify urgency, counter myths, and serve all users.
 
-        response = llm_with_tools.invoke(messages)
+=== TRIAGE FIRST ===
+- EMERGENCY (chest pain, difficulty breathing, severe bleeding, stroke, suicidal): Start with "🚨 EMERGENCY: Call 911/108 NOW"
+- URGENT (high fever >103°F, vomiting blood, fracture): Start with "⚠️ URGENT: See doctor within 24 hours"
+
+=== PREVENTION ===
+Always include: "To prevent spread: [2-3 specific actions]" for infectious symptoms
+
+=== TRUSTED INFO ===
+- Cite source: "[Source: Government Data]" or "[Source: WHO/CDC]"
+- If query is a known myth, say: "This is not supported by evidence."
+
+=== ACCESSIBILITY ===
+- Use simple words. Short sentences.
+- be multilingual your goal is to interact with user in the language in which they are comfortable
+
+Use search_dataset for stats. Use search_web only if dataset fails.
+"""
+        
+        # Create SystemMessage and prepend to messages
+        system_message = SystemMessage(content=system_prompt)
+        
+        # Only add system message if not already present (optional: avoid duplication)
+        if not messages or not isinstance(messages[0], SystemMessage):
+            messages_with_system = [system_message] + messages
+        else:
+            messages_with_system = messages
+        
+        response = llm_with_tools.invoke(messages_with_system)
 
         print("🧠 LLM RESPONSE:", response)
         return {"messages": [response]}
 
     except Exception as e:
         print("❌ LLM ERROR:", str(e))
-
         return {
             "messages": [
                 AIMessage(content="Something went wrong. Please try again.")
             ]
         }
-
+    
 
 tool_node = ToolNode([search_web,search_dataset])
